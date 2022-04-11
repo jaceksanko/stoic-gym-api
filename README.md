@@ -1,4 +1,4 @@
-# Stoic-gym
+# Stoic gym API
 
 Steps to run this project:
 
