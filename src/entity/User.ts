@@ -1,18 +1,31 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+
+export enum UserRole {
+  ADMIN = 'admin',
+  EDITOR = 'editor',
+}
 
 @Entity()
 export class User {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @PrimaryGeneratedColumn()
-    id: number
+  @Column()
+  firstName: string;
 
-    @Column()
-    firstName: string
+  @Column()
+  lastName: string;
 
-    @Column()
-    lastName: string
+  @Column()
+  email: string;
 
-    @Column()
-    age: number
+  @Column()
+  password: string;
 
+  @Column({
+    type: 'enum',
+    enum: UserRole,
+    default: UserRole.EDITOR,
+  })
+  role: UserRole;
 }

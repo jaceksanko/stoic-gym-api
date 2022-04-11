@@ -2,7 +2,7 @@ import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import { Request, Response } from 'express';
 import { AppDataSource } from './data-source';
-import { User } from './entity/User';
+import { User, UserRole } from './entity/User';
 import { Routes } from './routes';
 
 AppDataSource.initialize()
@@ -45,7 +45,9 @@ AppDataSource.initialize()
       AppDataSource.manager.create(User, {
         firstName: 'Timber',
         lastName: 'Saw',
-        age: 27,
+        email: 'test@test.com',
+        password: '123',
+        role: UserRole.ADMIN,
       })
     );
 
