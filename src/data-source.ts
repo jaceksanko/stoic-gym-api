@@ -10,7 +10,7 @@ export const AppDataSource = new DataSource({
   database: 'stoic-gym',
   synchronize: true,
   logging: false,
-  entities: [`${__dirname}/entities/*.ts`],
+  entities: [`${__dirname}/entities/**/*.ts`],
   migrations: [],
   subscribers: [],
 });

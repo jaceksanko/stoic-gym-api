@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { AppDataSource } from '../data-source';
 import { Exercise } from '../entities/Exercise';
-import { User } from '../entities/User';
+import { User } from '../entities/user/User';
 
 export class ExerciseController {
   private exerciseRepository = AppDataSource.getRepository(Exercise);

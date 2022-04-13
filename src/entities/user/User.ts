@@ -6,7 +6,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Exercise } from './Exercise';
+import { Exercise } from '../Exercise';
 import { Password } from './Password';
 import { Role } from './Role';
 
