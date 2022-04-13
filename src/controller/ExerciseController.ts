@@ -9,8 +9,9 @@ export class ExerciseController {
 
   async all(request: Request, response: Response, next: NextFunction) {
     const exercises = await this.exerciseRepository.find({
-      relations: ['user'],
-      loadRelationIds: true,
+      relations: {
+        user: true,
+      },
     });
     return exercises;
   }

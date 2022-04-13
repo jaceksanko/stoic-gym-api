@@ -1,10 +1,14 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Exercise } from './Exercise';
-
-export enum UserRole {
-  ADMIN = 'admin',
-  EDITOR = 'editor',
-}
+import { Password } from './Password';
+import { Role } from './Role';
 
 @Entity()
 export class User {
@@ -20,15 +24,13 @@ export class User {
   @Column()
   email: string;
 
-  @Column()
-  password: string;
+  @OneToOne(() => Password)
+  @JoinColumn()
+  password: Password;
 
-  @Column({
-    type: 'enum',
-    enum: UserRole,
-    default: UserRole.EDITOR,
-  })
-  role: UserRole;
+  @OneToOne(() => Role)
+  @JoinColumn()
+  role: Role;
 
   @OneToMany(() => Exercise, (exercise) => exercise.user)
   exercises: Exercise[];
