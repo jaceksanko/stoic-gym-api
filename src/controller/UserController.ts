@@ -1,12 +1,16 @@
 import { NextFunction, Request, Response } from 'express';
 import { AppDataSource } from '../data-source';
-import { User } from '../entity/User';
+import { User } from '../entities/User';
 
 export class UserController {
   private userRepository = AppDataSource.getRepository(User);
 
   async all(request: Request, response: Response, next: NextFunction) {
-    return this.userRepository.find();
+    return this.userRepository.find({
+      relations: {
+        exercises: true,
+      },
+    });
   }
 
   async one(request: Request, response: Response, next: NextFunction) {

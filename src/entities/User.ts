@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Exercise } from './Exercise';
 
 export enum UserRole {
   ADMIN = 'admin',
@@ -28,4 +29,7 @@ export class User {
     default: UserRole.EDITOR,
   })
   role: UserRole;
+
+  @OneToMany(() => Exercise, (exercise) => exercise.user)
+  exercises: Exercise[];
 }
