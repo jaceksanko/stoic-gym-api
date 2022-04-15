@@ -33,9 +33,9 @@ export class ExerciseController {
   }
 
   async remove(request: Request, response: Response, next: NextFunction) {
-    let userToRemove = await this.exerciseRepository.findOneBy({
+    let exerciseToRemove = await this.exerciseRepository.findOneBy({
       id: request.params.id,
     });
-    await this.exerciseRepository.remove(userToRemove);
+    await this.exerciseRepository.remove(exerciseToRemove);
   }
 }
