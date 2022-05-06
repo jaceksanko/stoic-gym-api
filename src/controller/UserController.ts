@@ -3,6 +3,7 @@ import { AppDataSource } from '../data-source';
 import { Password } from '../entities/user/Password';
 import { Role } from '../entities/user/Role';
 import { User } from '../entities/user/User';
+const bcrypt = require('bcrypt');
 
 export class UserController {
   private userRepository = AppDataSource.getRepository(User);
@@ -22,14 +23,13 @@ export class UserController {
   }
 
   async save(request: Request, response: Response, next: NextFunction) {
-    console.log(request.body);
     const { firstName, lastName, email, password, role } = request.body;
     const userRole = new Role();
     userRole.role = role;
     await this.roleRepository.save(userRole);
 
     const userPassword = new Password();
-    userPassword.password = password;
+    userPassword.password = await bcrypt.hash(password, 10);
     await this.passwordRepository.save(userPassword);
 
     const user = new User();
