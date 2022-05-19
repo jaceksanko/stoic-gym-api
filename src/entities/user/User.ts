@@ -24,7 +24,10 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @OneToOne(() => Password)
+  @OneToOne(() => Password, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
   password: Password;
 

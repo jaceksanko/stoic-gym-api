@@ -19,7 +19,9 @@ export class UserController {
   }
 
   async one(request: Request, response: Response, next: NextFunction) {
-    return this.userRepository.findOne(request.params.id);
+    return await this.userRepository.findOneBy({
+      id: request.params.id,
+    });
   }
 
   async save(request: Request, response: Response, next: NextFunction) {
@@ -30,7 +32,6 @@ export class UserController {
 
     const userPassword = new Password();
     userPassword.password = await bcrypt.hash(password, 10);
-    await this.passwordRepository.save(userPassword);
 
     const user = new User();
     user.firstName = firstName;
@@ -38,13 +39,23 @@ export class UserController {
     user.email = email;
     user.password = userPassword;
     user.role = userRole;
+
+    await this.passwordRepository.save(userPassword);
     return this.userRepository.save(user);
   }
 
   async remove(request: Request, response: Response, next: NextFunction) {
-    let userToRemove = await this.userRepository.findOneBy({
-      id: request.params.id,
+    let [userToRemove] = await this.userRepository.find({
+      relations: {
+        password: true,
+      },
+      where: { id: request.params.id },
     });
+    let passwordToRemove = await this.passwordRepository.findOneBy({
+      id: userToRemove.password.id,
+    });
+
     await this.userRepository.remove(userToRemove);
+    await this.passwordRepository.remove(passwordToRemove);
   }
 }
