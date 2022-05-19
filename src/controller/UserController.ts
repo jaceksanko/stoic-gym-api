@@ -45,7 +45,7 @@ export class UserController {
   }
 
   async remove(request: Request, response: Response, next: NextFunction) {
-    let [userToRemove] = await this.userRepository.find({
+    let userToRemove = await this.userRepository.findOne({
       relations: {
         password: true,
       },
