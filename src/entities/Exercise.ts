@@ -20,7 +20,10 @@ export class Exercise {
   @Column()
   description: string;
 
-  @ManyToOne(() => User, (user) => user.exercises)
+  @ManyToOne(() => User, (user) => user.exercises, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'user_id' })
   user: User;
 

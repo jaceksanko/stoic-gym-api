@@ -17,7 +17,7 @@ export class CommentController {
   }
 
   async one(request: Request, response: Response, next: NextFunction) {
-    return this.commentRepository.findOne(request.params.id);
+    return await this.commentRepository.findOneBy({ id: request.params.id });
   }
 
   async save(request: Request, response: Response, next: NextFunction) {

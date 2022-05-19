@@ -17,7 +17,7 @@ export class ExerciseController {
   }
 
   async one(request: Request, response: Response, next: NextFunction) {
-    return this.exerciseRepository.findOne(request.params.id);
+    return await this.exerciseRepository.findOneBy({ id: request.params.id });
   }
 
   async save(request: Request, response: Response, next: NextFunction) {

@@ -15,7 +15,10 @@ export class Comment {
   @Column()
   description: string;
 
-  @ManyToOne(() => Exercise, (exercise) => exercise.comments)
+  @ManyToOne(() => Exercise, (exercise) => exercise.comments, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
   exercise: Exercise;
 }
