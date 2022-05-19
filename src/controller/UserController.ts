@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { AppDataSource } from '../data-source';
 import { Password } from '../entities/user/Password';
-import { Role } from '../entities/user/Role';
+import { Role, UserRole } from '../entities/user/Role';
 import { User } from '../entities/user/User';
 const bcrypt = require('bcrypt');
 
@@ -26,9 +26,25 @@ export class UserController {
 
   async save(request: Request, response: Response, next: NextFunction) {
     const { firstName, lastName, email, password, role } = request.body;
-    const userRole = new Role();
-    userRole.role = role;
-    await this.roleRepository.save(userRole);
+    const roles = await this.roleRepository.find();
+
+    let adminRole;
+    let editorRole;
+
+    if (roles.length !== 0) {
+      adminRole = roles.find((role) => role.role === UserRole.ADMIN);
+      editorRole = roles.find((role) => role.role === UserRole.EDITOR);
+    } else {
+      const userAdminRole = new Role();
+      userAdminRole.role = UserRole.ADMIN;
+      await this.roleRepository.save(userAdminRole);
+      adminRole = userAdminRole;
+
+      const userEditorRole = new Role();
+      userEditorRole.role = UserRole.EDITOR;
+      await this.roleRepository.save(userEditorRole);
+      editorRole = userEditorRole;
+    }
 
     const userPassword = new Password();
     userPassword.password = await bcrypt.hash(password, 10);
@@ -38,7 +54,7 @@ export class UserController {
     user.lastName = lastName;
     user.email = email;
     user.password = userPassword;
-    user.role = userRole;
+    user.role = role === UserRole.ADMIN ? adminRole : editorRole;
 
     await this.passwordRepository.save(userPassword);
     return this.userRepository.save(user);

@@ -2,6 +2,7 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -31,7 +32,7 @@ export class User {
   @JoinColumn()
   password: Password;
 
-  @OneToOne(() => Role)
+  @ManyToOne(() => Role, (role) => role.users)
   @JoinColumn()
   role: Role;
 
